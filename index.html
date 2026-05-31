@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HCI Dashboard</title>
     
-    <script src="https://cjrtnc.leaningtech.com/2.3/loader.js"></script>
+    <script src="https://cjrtnc.leaningtech.com/4.3/loader.js"></script>
 
     <style>
         body {
@@ -32,14 +32,20 @@
     </div>
 
     <script>
-        // Start the engine
-        cheerpJInit();
-        
-        // Create the display window to match your Java file's 1000x750 size
-        cheerpJCreateDisplay(1000, 750);
-        
-        // Run your exact class name from your exact JAR file
-        cheerpJRunMain("InteractiveDashboard3", "InteractiveDashboard3.jar");
+        // Modern CheerpJ initializes asynchronously using lowercase 'j'
+        (async () => {
+            // 1. Initialize the environment
+            await cheerpjInit();
+            
+            // Hide the loading message once the environment is ready
+            document.getElementById('loading-message').style.display = 'none';
+
+            // 2. Create the app window to match your 1000x750 frame dimensions
+            cheerpjCreateDisplay(1000, 750);
+            
+            // 3. Execute the class. /app/ tells the filesystem to look at your root folder
+            await cheerpjRunMain("InteractiveDashboard3", "/app/InteractiveDashboard3.jar");
+        })();
     </script>
 
 </body>
