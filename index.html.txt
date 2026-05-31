@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HCI Dashboard - Climate Control</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex justify-center items-center p-4">
+
+    <div class="w-full max-w-5xl bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex h-[650px]">
+        
+        <aside class="w-20 bg-slate-950 border-r border-slate-800 flex flex-col items-center py-6 justify-between">
+            <div class="text-blue-500 font-bold text-2xl tracking-wider">⚡</div>
+            <div class="flex flex-col space-y-6">
+                <button class="p-3 bg-slate-800 text-blue-400 rounded-xl transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                </button>
+                <button class="p-3 text-slate-500 hover:text-slate-300 transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
+                </button>
+                <button class="p-3 text-slate-500 hover:text-slate-300 transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
+                </button>
+            </div>
+            <div class="text-slate-600 text-sm font-medium">v2.4</div>
+        </aside>
+
+        <main class="flex-1 grid grid-cols-12 p-6 gap-6 bg-gradient-to-b from-slate-900 to-slate-950">
+            
+            <section class="col-span-5 flex flex-col justify-between h-full space-y-4">
+                
+                <div class="grid grid-cols-2 gap-4 flex-grow">
+                    <div class="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-4 flex flex-col justify-between items-center shadow-lg">
+                        <span class="text-xs font-semibold tracking-wider text-slate-400 uppercase">Driver</span>
+                        <div class="text-4xl font-bold my-2 text-white"><span id="driverTemp">22</span>°C</div>
+                        <div class="flex space-x-2 w-full">
+                            <button onclick="adjustTemp('driver', -1)" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-xl font-bold transition active:scale-95">-</button>
+                            <button onclick="adjustTemp('driver', 1)" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-xl font-bold transition active:scale-95">+</button>
+                        </div>
+                    </div>
+                    <div class="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-4 flex flex-col justify-between items-center shadow-lg">
+                        <span class="text-xs font-semibold tracking-wider text-slate-400 uppercase">Passenger</span>
+                        <div class="text-4xl font-bold my-2 text-white"><span id="passengerTemp">22</span>°C</div>
+                        <div class="flex space-x-2 w-full">
+                            <button onclick="adjustTemp('passenger', -1)" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-xl font-bold transition active:scale-95">-</button>
+                            <button onclick="adjustTemp('passenger', 1)" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-xl font-bold transition active:scale-95">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-4 gap-2 h-11">
+                    <button onclick="toggleMode(this)" class="mode-btn bg-slate-800 border border-slate-700 hover:bg-slate-700 rounded-xl text-xs font-medium transition active:scale-95">A/C</button>
+                    <button onclick="toggleMode(this)" class="mode-btn bg-slate-800 border border-slate-700 hover:bg-slate-700 rounded-xl text-xs font-medium transition active:scale-95">Defrost</button>
+                    <button onclick="toggleMode(this)" class="mode-btn bg-slate-800 border border-slate-700 hover:bg-slate-700 rounded-xl text-xs font-medium transition active:scale-95">Heat Seats</button>
+                    <button onclick="toggleMode(this)" class="mode-btn bg-slate-800 border border-slate-700 hover:bg-slate-700 rounded-xl text-xs font-medium transition active:scale-95">Auto</button>
+                </div>
+
+                <div class="bg-slate-800/40 border border-slate-700/40 rounded-2xl p-3 shadow-inner">
+                    <div class="text-xs font-bold text-slate-400 mb-2 px-1 flex justify-between">
+                        <span>FAN SPEED</span>
+                        <span id="fanStatus" class="text-blue-400 font-normal">Level 2</span>
+                    </div>
+                    <div class="grid grid-cols-4 gap-2 h-10">
+                        <button onclick="setFanSpeed(1)" class="fan-btn bg-slate-800 border border-slate-700 rounded-xl font-semibold text-sm transition active:scale-95">1</button>
+                        <button onclick="setFanSpeed(2)" class="fan-btn bg-blue-600 border border-blue-500 rounded-xl font-semibold text-sm transition active:scale-95 shadow-lg shadow-blue-600/30 text-white">2</button>
+                        <button onclick="setFanSpeed(3)" class="fan-btn bg-slate-800 border border-slate-700 rounded-xl font-semibold text-sm transition active:scale-95">3</button>
+                        <button onclick="setFanSpeed(4)" class="fan-btn bg-slate-800 border border-slate-700 rounded-xl font-semibold text-sm transition active:scale-95">4</button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex items-start space-x-3 shadow-md">
+                    <div class="text-blue-400 text-lg mt-0.5">ⓘ</div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-slate-200">Climate Impact</h4>
+                        <p class="text-xs text-slate-400 mt-0.5">Current dashboard settings: <span class="text-emerald-400 font-medium">-12 km range</span></p>
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="col-span-7 flex flex-col gap-4">
+                <div class="flex-1 bg-slate-800/30 border border-slate-700/30 rounded-3xl p-4 flex flex-col justify-between relative overflow-hidden group shadow-lg">
+                    <div class="absolute inset-0 bg-slate-950/40 pointer-events-none"></div>
+                    <div class="z-10 flex justify-between items-start">
+                        <div class="bg-slate-900/90 backdrop-blur border border-slate-700 p-3 rounded-xl max-w-[200px]">
+                            <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Next Turn</p>
+                            <p class="text-sm font-semibold text-white mt-0.5">Jalan Universiti Malaysia Sarawak</p>
+                        </div>
+                        <div class="bg-slate-900/90 backdrop-blur border border-slate-700 px-3 py-1.5 rounded-full text-xs font-medium">
+                            🧭 GPS Active
+                        </div>
+                    </div>
+                    <div class="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+                    <div class="z-10 text-right">
+                        <p class="text-2xl font-bold text-white">14 mins</p>
+                        <p class="text-xs text-slate-400">to destination • 8.4 km</p>
+                    </div>
+                </div>
+
+                <div class="h-28 bg-slate-800/50 border border-slate-700/50 rounded-2xl p-4 flex items-center justify-between shadow-lg">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-16 h-16 bg-blue-900/50 border border-blue-700/30 rounded-xl flex items-center justify-center text-2xl">🎵</div>
+                        <div>
+                            <p class="text-xs text-blue-400 font-bold tracking-wider uppercase">Now Playing</p>
+                            <h3 class="text-sm font-semibold text-white mt-0.5">Melodic Trap Beats</h3>
+                            <p class="text-xs text-slate-400">FL Studio Project Mix</p>
+                        </div>
+                    </div>
+                    <div class="flex space-x-3">
+                        <button class="p-2.5 bg-slate-800 border border-slate-700 rounded-full text-slate-300 hover:bg-slate-700">⏮</button>
+                        <button class="p-2.5 bg-blue-600 rounded-full text-white hover:bg-blue-500 shadow-md">⏸</button>
+                        <button class="p-2.5 bg-slate-800 border border-slate-700 rounded-full text-slate-300 hover:bg-slate-700">⏭</button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        // Temperature handling
+        function adjustTemp(id, amount) {
+            const target = document.getElementById(`${id}Temp`);
+            let currentTemp = parseInt(target.innerText);
+            currentTemp += amount;
+            target.innerText = currentTemp;
+        }
+
+        // Toggle state for climate operational parameters
+        function toggleMode(button) {
+            button.classList.toggle('bg-slate-800');
+            button.classList.toggle('border-slate-700');
+            
+            // Turn on active glow styling
+            button.classList.toggle('bg-blue-600/20');
+            button.classList.toggle('border-blue-500');
+            button.classList.toggle('text-blue-400');
+        }
+
+        // Segmented control implementation for fan velocity configuration
+        function setFanSpeed(level) {
+            document.getElementById('fanStatus').innerText = `Level ${level}`;
+            const buttons = document.querySelectorAll('.fan-btn');
+            
+            buttons.forEach((btn, index) => {
+                if (index === (level - 1)) {
+                    // Highlight selected item
+                    btn.className = "fan-btn bg-blue-600 border border-blue-500 rounded-xl font-semibold text-sm transition active:scale-95 shadow-lg shadow-blue-600/30 text-white";
+                } else {
+                    // Reset others
+                    btn.className = "fan-btn bg-slate-800 border border-slate-700 rounded-xl font-semibold text-sm transition active:scale-95 text-slate-100";
+                }
+            });
+        }
+    </script>
+</body>
+</html>
