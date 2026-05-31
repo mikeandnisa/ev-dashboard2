@@ -3,54 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SDG EV Dashboard Prototype</title>
-    <script src="https://cjrtnc.leaningtech.com/3.0/loader.js"></script>
+    <title>HCI Dashboard</title>
+    
+    <script src="https://cjrtnc.leaningtech.com/2.3/loader.js"></script>
+
     <style>
         body {
             margin: 0;
             padding: 0;
             background-color: #f5f5f5;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             font-family: Arial, sans-serif;
         }
         #loading-message {
-            position: absolute;
-            font-size: 20px;
-            color: #333;
-            font-weight: bold;
             text-align: center;
-        }
-        /* Style adjustments for the CheerpJ runtime canvas container */
-        #cheerpjDisplay {
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            border-radius: 8px;
-            overflow: hidden;
         }
     </style>
 </head>
 <body>
 
     <div id="loading-message">
-        <p>⚡ Loading SDG EV Dashboard System...</p>
-        <span style="font-size: 14px; color: #777; font-weight: normal;">This may take a few seconds on the first load.</span>
+        <h2>⚡ Loading SDG EV Dashboard System...</h2>
+        <p style="color: gray;">This may take a few seconds on the first load.</p>
     </div>
 
     <script>
-        // Initialize the CheerpJ runtime environments
-        cheerpJInit().then(() => {
-            // Creates the display frame matching your Java frame size (1000x750)
-            cheerpJCreateDisplay(1000, 750);
-            
-            // Remove the loading screen placeholder text once the environment finishes setup
-            const loadingText = document.getElementById('loading-message');
-            if (loadingText) loadingText.remove();
-            
-            // Execute the main method inside your InteractiveDashboard3 class from the compiled JAR file
-            cheerpJRunMain("InteractiveDashboard3", "/app/InteractiveDashboard3.jar");
-        });
+        // Start the engine
+        cheerpJInit();
+        
+        // Create the display window to match your Java file's 1000x750 size
+        cheerpJCreateDisplay(1000, 750);
+        
+        // Run your exact class name from your exact JAR file
+        cheerpJRunMain("InteractiveDashboard3", "InteractiveDashboard3.jar");
     </script>
 
 </body>
