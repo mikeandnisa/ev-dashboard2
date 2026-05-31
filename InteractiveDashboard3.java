@@ -39,8 +39,14 @@ public class InteractiveDashboard3 {
             JPanel innerCenter = new JPanel(new BorderLayout(0, 15));
             innerCenter.setBackground(new Color(245, 245, 245));
 
-            // Create a standard panel that will hold one view at a time safely on the web
-JPanel centerDynamicArea = new JPanel(new BorderLayout());
+            CardLayout cardLayout = new CardLayout();
+            JPanel centerDynamicArea = new JPanel(cardLayout);
+            
+            // Add all screens to the CardLayout stack
+            centerDynamicArea.add(createHomeView(), "HOME");
+            centerDynamicArea.add(createEnergyView(), "ENERGY");
+            centerDynamicArea.add(createClimateView(), "CLIMATE");
+            centerDynamicArea.add(createMediaView(), "MEDIA");
 
             // Navigation Bar
             JPanel navTabs = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
@@ -48,7 +54,7 @@ JPanel centerDynamicArea = new JPanel(new BorderLayout());
             JButton navBtn = new JButton("Navigation");
             JButton energyBtn = new JButton("Energy");
             JButton climateBtn = new JButton("Climate");
-            JButton mediaBtn = new JButton("Media"); // NEW
+            JButton mediaBtn = new JButton("Media");
             
             navTabs.add(navBtn);
             navTabs.add(energyBtn);
@@ -68,38 +74,13 @@ JPanel centerDynamicArea = new JPanel(new BorderLayout());
             contentPane.add(rightPanel, gbc);
 
             // --- ACTION LISTENERS (The Navigation Logic) ---
-            // --- ACTION LISTENERS (The Navigation Logic) ---
-// --- ACTION LISTENERS (Web-Safe Dynamic Swapping) ---
-            navBtn.addActionListener(e -> {
-                centerDynamicArea.removeAll();
-                centerDynamicArea.add(createHomeView(), BorderLayout.CENTER);
-                centerDynamicArea.revalidate();
-                centerDynamicArea.repaint();
-            });
+            navBtn.addActionListener(e -> cardLayout.show(centerDynamicArea, "HOME"));
+            energyBtn.addActionListener(e -> cardLayout.show(centerDynamicArea, "ENERGY"));
+            climateBtn.addActionListener(e -> cardLayout.show(centerDynamicArea, "CLIMATE"));
+            mediaBtn.addActionListener(e -> cardLayout.show(centerDynamicArea, "MEDIA"));
 
-            energyBtn.addActionListener(e -> {
-                centerDynamicArea.removeAll();
-                centerDynamicArea.add(createEnergyView(), BorderLayout.CENTER);
-                centerDynamicArea.revalidate();
-                centerDynamicArea.repaint();
-            });
-
-            climateBtn.addActionListener(e -> {
-                centerDynamicArea.removeAll();
-                centerDynamicArea.add(createClimateView(), BorderLayout.CENTER);
-                centerDynamicArea.revalidate();
-                centerDynamicArea.repaint();
-            });
-
-            mediaBtn.addActionListener(e -> {
-                centerDynamicArea.removeAll();
-                centerDynamicArea.add(createMediaView(), BorderLayout.CENTER);
-                centerDynamicArea.revalidate();
-                centerDynamicArea.repaint();
-            });
-
-            // 3. Force startup on the HOME screen by loading it initially
-            centerDynamicArea.add(createHomeView(), BorderLayout.CENTER);
+            // 3. Force startup on the HOME screen
+            cardLayout.show(centerDynamicArea, "HOME");
             frame.setVisible(true);
         });
     }
@@ -263,17 +244,14 @@ JPanel centerDynamicArea = new JPanel(new BorderLayout());
         return panel;
     }
 
-    // NEW: Media View specific to the latest screenshot
     private static JPanel createMediaView() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         
-        // 1. Now Playing Banner
         JPanel nowPlaying = new JPanel(new BorderLayout(20, 0));
-        nowPlaying.setBackground(new Color(230, 230, 230)); // Mocking the gradient
+        nowPlaying.setBackground(new Color(230, 230, 230));
         nowPlaying.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
-        // Mock album art square
         JPanel albumArt = new JPanel();
         albumArt.setBackground(Color.GRAY);
         albumArt.setPreferredSize(new Dimension(100, 100));
@@ -281,7 +259,6 @@ JPanel centerDynamicArea = new JPanel(new BorderLayout());
         musicIcon.setFont(new Font("Arial", Font.PLAIN, 40));
         albumArt.add(musicIcon);
 
-        // Song Info
         JPanel songInfo = new JPanel(new GridLayout(3, 1));
         songInfo.setOpaque(false);
         JLabel npLabel = new JLabel("NOW PLAYING");
@@ -295,7 +272,6 @@ JPanel centerDynamicArea = new JPanel(new BorderLayout());
         songInfo.add(titleLabel);
         songInfo.add(artistLabel);
 
-        // Volume Button (Mock)
         JButton volBtn = new JButton("🔊");
         volBtn.setBackground(new Color(50, 150, 250));
         volBtn.setForeground(Color.WHITE);
@@ -304,13 +280,11 @@ JPanel centerDynamicArea = new JPanel(new BorderLayout());
         nowPlaying.add(songInfo, BorderLayout.CENTER);
         nowPlaying.add(volBtn, BorderLayout.EAST);
 
-        // 2. Media Source Buttons
         JPanel sourceRow = new JPanel(new GridLayout(1, 3, 15, 0));
         sourceRow.add(createSquareButton("Radio"));
         sourceRow.add(createSquareButton("Streaming"));
         sourceRow.add(createSquareButton("Phone"));
 
-        // 3. Presets List
         JPanel presets = new JPanel(new GridLayout(3, 1, 0, 5));
         presets.setBorder(BorderFactory.createTitledBorder("PRESETS"));
         
@@ -333,8 +307,6 @@ JPanel centerDynamicArea = new JPanel(new BorderLayout());
 
         return panel;
     }
-
-    // --- Helper Methods ---
 
     private static JPanel createTempControlCard(String title, String defaultTemp) {
         JPanel card = new JPanel(new BorderLayout());
